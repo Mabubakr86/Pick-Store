@@ -57,12 +57,13 @@
       {% for product in products %}
       <div class="col-lg-4 col-md-6 mb-5">
         <div class="product-item">
-          <figure>
-            <img src="{{product.p_photo.url}}" alt="Image" class="img-fluid">
+          <a href="{{product.get_absolute_url}}">
+          <figure><img src="{{product.p_photo.url}}" alt="Image" class="img-fluid" >
           </figure>
+          </a>
           <div class="px-4">
             
-            <h3><a href="#">{{product.name}}</a></h3>
+            <h3><a href="{{product.get_absolute_url}}">{{product.name}}</a></h3>
             <div class="mb-3">
               <span class="meta-icons mr-3"><a href="#" class="mr-2"><span class="icon-star text-warning"></span></a> {{product.rating}}</span>
               <span class="meta-icons wishlist"><a href="#" class="mr-2"><span class="icon-heart"></span></a> 29</span>

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify 
 from django.utils import timezone
+from django.urls import reverse
 from PIL import Image
 
 
@@ -41,6 +42,9 @@ class Product(models.Model):
     @property
     def slug(self):
         return slugify(self.name)
+
+    def get_absolute_url(self):
+        return reverse(viewname='store:product', kwargs={'pk':self.id})
 
     def __str__(self):
         return self.name
