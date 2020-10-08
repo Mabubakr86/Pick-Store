@@ -3,7 +3,17 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify 
 from django.utils import timezone
 from django.urls import reverse
+from django.core.validators import MaxValueValidator, MinValueValidator
 from PIL import Image
+
+
+class ReviewManger(models.Manager):
+
+    def get_last_reviews(self,prod):
+        if len(self.filter(product=prod)) > 5:
+            return self.filter(product=prod)[:5]
+        else: 
+            return self.filter(product=prod)
 
 
 class Customer(models.Model):
@@ -29,22 +39,21 @@ class CustomerProfile(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=30, null=True, blank=True)
-    price = models.DecimalField(max_digits=5, decimal_places=2, 
+    price = models.DecimalField(max_digits=12, decimal_places=2, 
                                 null=True, blank=True)
     category = models.ManyToManyField(to='Category', null=True, blank=True)
     short_desc = models.CharField(max_length=100,null=True, blank=True)
     long_desc = models.TextField(blank=True)
     p_photo = models.ImageField(null=True, blank=True)
-    slug = models.SlugField(null=True, blank=True)
+    slug = models.SlugField(null=True, blank=True, unique=True)
     rating = models.IntegerField(null=True, blank=True)
 
-
-    @property
-    def slug(self):
-        return slugify(self.name)
+    def save(self,*args,**kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args,**kwargs)
 
     def get_absolute_url(self):
-        return reverse(viewname='store:product', kwargs={'pk':self.id})
+        return reverse(viewname='store:product', kwargs={'slug':self.slug})
 
     def __str__(self):
         return self.name
@@ -79,8 +88,22 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return self.product.name
-    
 
+
+class ProductReviw(models.Model):
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
+    reviewer = models.CharField(max_length=100)
+    review = models.TextField(null=True, blank=True)
+    score = models.IntegerField(default=1,validators=[MaxValueValidator(5), MinValueValidator(1)])
+    
+    class Meta:
+        ordering = ('-id',)
+
+    objects = ReviewManger()
+
+
+    def __str__(self):
+        return self.product.name
 
 
 

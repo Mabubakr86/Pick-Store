@@ -6,6 +6,7 @@ admin.site.register(CustomerProfile)
 admin.site.register(Category)
 admin.site.register(Order)
 admin.site.register(OrderItem)
+admin.site.register(ProductReviw)
 
 
 class ProductAdmin(admin.ModelAdmin):
