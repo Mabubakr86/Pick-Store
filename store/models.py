@@ -77,6 +77,21 @@ class Order(models.Model):
     created_at = models.DateTimeField(default= timezone.now())
     completed = models.BooleanField(default=False)
 
+    @property
+    def get_total_items_count(self):
+        orderitems = self.orderitem_set.all()
+        total = sum([item.quantity for item in orderitems])
+        return total 
+
+    @property
+    def get_total_items_price(self):
+        orderitems = self.orderitem_set.all()
+        total = sum([item.get_total_price for item in orderitems])
+        return total 
+
+    # def get_total_items_price(self):
+    #     return self.orderItem_set.all().count()
+
     def __str__(self):
         return f'{self.customer.name} order'
 
@@ -86,8 +101,12 @@ class OrderItem(models.Model):
     created_at = models.DateTimeField(default= timezone.now())
     quantity = models.IntegerField(default=0)
 
+    @property
+    def get_total_price(self):
+        return self.quantity * self.product.price
+
     def __str__(self):
-        return self.product.name
+        return f'{self.product.name}-{self.quantity}'
 
 
 class ProductReviw(models.Model):

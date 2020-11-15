@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'django_inlinecss',
     'crispy_forms',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
