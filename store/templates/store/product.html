@@ -23,12 +23,15 @@
             <p>
               {% if ordered %}
               <div>
-                <button class="fa fa-angle-up update-cart" data-product={{product.id}} data-action="add" style="font-size:17px;color:red">Add more item</button>
+                <button class="fa fa-plus update-cart" data-product={{product.id}} data-action="add" style="font-size:17px;color:red;border: none;background: inherit;"><span class="ml-3"> Add additional piece</span></button>
 <!--                 <a class="fa fa-plus">Add one more piece</a>
                 <button><i class="fa fa-plus" style="font-size:48px;color:red">add</i></button> -->
               </div>
               <div>
-                <button href="" class="fa fa-angle-down update-cart" data-product={{product.id}} data-action="remove" style="font-size:17px;color:red">Remove one item</button>
+                <button href="" class="fa fa-minus update-cart" data-product={{product.id}} data-action="remove" style="font-size:17px;color:red;border: none;background: inherit;"><span class="ml-3"> Remove one piece</span></button>
+              </div>
+              <div>
+                <button class="btn update-cart mt-3" data-product={{product.id}} data-action="remove all" style="font-size:17px;color:red;"><i class="fa fa-trash"></i> Remove</button>
               </div>
               {% else %}
               <button class="btn btn-black mr-1 rounded-0 d-block d-lg-inline-block update-cart" data-product={{product.id}} data-action="add">Add to Cart</button>

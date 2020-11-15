@@ -65,6 +65,9 @@ def update_cart(request):
                 order_item.save()
             else:
                 order_item.delete()
+        elif action == 'remove all':
+                order_item.delete()
+
 
         order_total = order.get_total_items_count           
 
