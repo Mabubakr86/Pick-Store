@@ -1,32 +1,35 @@
 {% extends 'store/base.html' %}
 {% load static %}
+{% load custom_tags %}
 {% block content %}
-
-<h1>Table</h1>
-<h1>Table</h1>
-
-
-<h1 class="justify-content-center">Table</h1>
-
-<table class="table mt-5">
-  <thead class="black white-text">
+  <h1>Table</h1>
+  <h1>Table</h1>
+  <h1 class="text-center mb-5">Order Summary</h1>
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in orderitems %}
+        <tr>
+          <td>{{forloop.counter}}</td>
+          <td><a href="{{item.product.get_absolute_url}}">{{item.product.name}}</a></td>
+          <td>{{item.quantity}}</td>
+          <td>{{item.get_total_price}}</td>
+        </tr>
+      </tr>
+    {% endfor %}
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-
+      <td style="font-weight: bold;">Total</td>
+      <td></td>
+      <td></td>
+      <td class="ml-5">{{order_total}}</td>
     </tr>
   </tbody>
 </table>
-
 {% endblock %}

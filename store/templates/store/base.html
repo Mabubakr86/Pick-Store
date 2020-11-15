@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="{% static 'store/css/aos.css' %}">
 
     <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'store/css/table.css' %}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript">
      
@@ -86,9 +88,10 @@
                 <li><a href="#products-section" class="nav-link">Contact Us</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="#" class="nav-link">{{user.username}}</a></li>
-                    <li class="fa fa-shopping-cart" style="font-size:25px;color:orange"><span style="font-size:20px;" class="ml-2" id='cart-total'>{%  get_cart_total request.user %}</span><a href="{% url 'store:cart' %}"></a></li>
+                    <li><a href="{% url 'store:cart' %}" class="fa fa-shopping-cart" style="font-size:25px;color:orange"><span style="font-size:20px;" class="ml-2" id='cart-total'>{%  get_cart_total request.user %}</span></a></li>
+                    <!-- just to pass url to ajax request -->
                     <a id='endpoint' href="{% url 'store:update_cart' %}"></a>
-<!--                     <i class="fa fa-shopping-cart" style="font-size:25px;color:orange"><span style="font-size:20px;" class="ml-2">0</span></i>  --> 
+                    <!-- Ended passing url -->
                     <li><a href="{% url 'account_logout' %}" class="nav-link">Logout</a></li>
                 {% else %}
                   <li><a href="{% url 'account_signup' %}" class="nav-link">Signup</a></li>

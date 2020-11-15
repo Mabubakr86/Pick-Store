@@ -11,14 +11,18 @@ def index(request):
     return render(request, 'store/products.html', context)
 
 
-
 def product(request, slug):
+    user = request.user
+    customer = Customer.objects.get(user=user)
     product = Product.objects.get(slug=slug)
+    order = Order.objects.get(customer=customer)
+    ordered = False
+    if order.orderitem_set.filter(product=product).exists():
+        ordered = True
     last_reviews = ProductReviw.objects.get_last_reviews(prod=product)
     if request.method == 'POST':
         review_form = ReviewForm(request.POST)
         if review_form.is_valid():
-
             form_data = review_form.save(commit=False)
             form_data.reviewer = request.user
             form_data.product = product
@@ -26,15 +30,20 @@ def product(request, slug):
             return redirect(reverse('store:product', kwargs={'slug':product.slug}))
     else:
         review_form = ReviewForm
-
-
-    return render(request, 'store/product.html', {'product':product,
-                            'r_form':review_form, 'reviews':last_reviews})
+    context = {'product':product,
+                            'r_form':review_form, 'reviews':last_reviews,
+                            'ordered':ordered}
+    return render(request, 'store/product.html',context=context )
 
 
 def cart(request):
-    context = {}
-    render(request, 'store/cart.html', context=context)
+    user = request.user
+    customer = Customer.objects.get(user=user)
+    order, created = Order.objects.get_or_create(customer=customer)
+    orderitems = order.orderitem_set.all()
+    order_total = order.get_total_items_price
+    context = {'orderitems':orderitems, 'order_total':order_total}
+    return render(request, 'store/cart.html', context=context)
 
 def update_cart(request):
     if request.method == 'POST':
@@ -49,7 +58,15 @@ def update_cart(request):
         if action == 'add':
             order_item.quantity +=1
             order_item.save()
-            order_total = order.get_total_items_count
+
+        elif action == 'remove':
+            if order_item.quantity > 0:
+                order_item.quantity -=1
+                order_item.save()
+            else:
+                order_item.delete()
+
+        order_total = order.get_total_items_count           
 
         return JsonResponse(data={'order_total':order_total})
     return JsonResponse(data={'error':'error'})

@@ -1,63 +1,64 @@
 {% extends 'store/base.html' %}
 {% load static %}
 {% block content %}
-{% load crispy_forms_tags %}
-
-
-    <div class="site-section bg-light">
-      <div class="container">
-        <div class="bg-white py-4 mb-4">
-          <div class="row mx-4 my-4 product-item-2 align-items-start">
-            <div class="col-md-6 mb-5 mb-md-0">
-              <img src="{{product.p_photo.url}}" alt="Image" class="img-fluid">
+  {% load crispy_forms_tags %}
+  <div class="site-section bg-light">
+    <div class="container">
+      <div class="bg-white py-4 mb-4">
+        <div class="row mx-4 my-4 product-item-2 align-items-start">
+          <div class="col-md-6 mb-5 mb-md-0">
+            <img src="{{product.p_photo.url}}" alt="Image" class="img-fluid">
+          </div>
+          
+          <div class="col-md-5 ml-auto product-title-wrap">
+            <span class="number">01.</span>
+            <h3 class="text-black mb-4 font-weight-bold">About This Product</h3>
+            <p class="mb-4">Et tempora id nostrum saepe amet doloribus deserunt totam officiis cupiditate asperiores quasi accusantium voluptatum dolorem quae sapiente voluptatem ratione odio iure blanditiis earum fuga molestiae alias dicta perferendis inventore!</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus soluta assumenda sed optio, error at?</p>
+            
+            <div class="mb-4">
+              <h3 class="text-black font-weight-bold h5">Price:</h3>
+              <div class="price">${{product.price}}</div>
             </div>
-           
-            <div class="col-md-5 ml-auto product-title-wrap">
-              <span class="number">01.</span>
-              <h3 class="text-black mb-4 font-weight-bold">About This Product</h3>
-              <p class="mb-4">Et tempora id nostrum saepe amet doloribus deserunt totam officiis cupiditate asperiores quasi accusantium voluptatum dolorem quae sapiente voluptatem ratione odio iure blanditiis earum fuga molestiae alias dicta perferendis inventore!</p>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus soluta assumenda sed optio, error at?</p>
-              
-              <div class="mb-4"> 
-                <h3 class="text-black font-weight-bold h5">Price:</h3>
-                <div class="price">${{product.price}}</div>
+            <p>
+              {% if ordered %}
+              <div>
+                <button class="fa fa-angle-up update-cart" data-product={{product.id}} data-action="add" style="font-size:17px;color:red">Add more item</button>
+<!--                 <a class="fa fa-plus">Add one more piece</a>
+                <button><i class="fa fa-plus" style="font-size:48px;color:red">add</i></button> -->
               </div>
-              <p>
-<!--                 <a href="#" class="btn btn-black btn-outline-black rounded-0 d-block mb-2 mb-lg-0 d-lg-inline-block">View Details</a> -->
-     <button class="btn btn-black mr-1 rounded-0 d-block d-lg-inline-block update-cart" data-product={{product.id}} data-action="add">Add to Cart</button>
-<!-- 
-                <a href="#" class="btn btn-black rounded-0 d-block d-lg-inline-block">Add To Cart</a> -->
-              </p>
-            </div>
+              <div>
+                <button href="" class="fa fa-angle-down update-cart" data-product={{product.id}} data-action="remove" style="font-size:17px;color:red">Remove one item</button>
+              </div>
+              {% else %}
+              <button class="btn btn-black mr-1 rounded-0 d-block d-lg-inline-block update-cart" data-product={{product.id}} data-action="add">Add to Cart</button>
+              {% endif %}
+              <!--
+              <a href="#" class="btn btn-black rounded-0 d-block d-lg-inline-block">Add To Cart</a> -->
+            </p>
           </div>
         </div>
-
-        <div class="bg-white py-4">
-          <div class="row mx-4 my-4 product-item-2 align-items-start">          
-            <div class="col-md-12 mr-auto product-title-wrap order-2 order-md-1">
-              <hr>
-              <h3 class="text-black mb-4 font-weight-bold">Reviews</h3>
-
-<ul class="list-group">
+      </div>
+      <div class="bg-white py-4">
+        <div class="row mx-4 my-4 product-item-2 align-items-start">
+          <div class="col-md-12 mr-auto product-title-wrap order-2 order-md-1">
+            <hr>
+            <h3 class="text-black mb-4 font-weight-bold">Reviews</h3>
+            <ul class="list-group">
               {% for review in reviews %}
-
-  <li class="list-group-item">{{review.review}} by <small class="price">{{review.reviewer}}</small></li>
+                <li class="list-group-item">{{review.review}} by <small class="price">{{review.reviewer}}</small></li>
               {% endfor %}
-</ul>
-      <hr>
-             <h3 class="text-black mb-4 font-weight-bold">Review Product</h3>
-              <form method="POST" action="">
-                {% csrf_token %}
-                {{r_form|crispy}}
-                <input type="submit" name="publish">               
-              </form>
-            </div>
+            </ul>
+            <hr>
+            <h3 class="text-black mb-4 font-weight-bold">Review Product</h3>
+            <form method="POST" action="">
+              {% csrf_token %}
+              {{r_form|crispy}}
+              <input type="submit" name="publish">
+            </form>
           </div>
         </div>
-
       </div>
     </div>
-
+  </div>
 {% endblock %}
-
-
