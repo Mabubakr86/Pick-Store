@@ -28,6 +28,7 @@
 
     <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'store/css/table.css' %}">
+    <link rel="stylesheet" href="{% static 'store/css/mystyle.css' %}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript">
@@ -175,6 +176,7 @@
   
   <script src="{% static 'store/js/main.js' %}"></script>
   <script src="{% static 'store/js/cart.js' %}"></script>
+  {% block script %}{% endblock script %}
 
   </body>
 </html>

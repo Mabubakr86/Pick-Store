@@ -32,4 +32,73 @@
     </tr>
   </tbody>
 </table>
+<div class="row mt-5">
+  <div class="col-md-10">
+  </div>
+  <div class="col-md-2">
+
+    <button type="button" class="btn btn-success btn-rounded" id='chout'>Check Out</button>
+
+  </div>
+</div>
+
+<div class="paysection payhidden" id='paydev'>
+  <div id="paypal-button"></div>
+</div>
+
+{% block script %}
+<script src="https://www.paypalobjects.com/api/checkout.js?disable-funding=credit"></script>
+<script>
+  paypal.Button.render({
+    // Configure environment
+    env: 'sandbox',
+    client: {
+      sandbox:'ASkED-Xdj_dnUtot5OeYcLU9Ot5jhbFC8jP60YAHtSuQgc23dcnqzwNP2qM-EIvGVxcxh2iBHDeZrt4p',
+      // sandbox: 'demo_sandbox_client_id',
+      production: 'demo_production_client_id'
+    },
+    // Customize button (optional)
+    locale: 'en_US',
+    style: {
+      size: 'large',
+      color: 'blue',
+      shape: 'pill',
+    },
+
+    // Enable Pay Now checkout flow (optional)
+    commit: true,
+
+    // Set up a payment
+    payment: function(data, actions) {
+      return actions.payment.create({
+        transactions: [{
+          amount: {
+            total: '{{order_total}}',
+            currency: 'USD'
+          }
+        }]
+      });
+    },
+    // Execute the payment
+    onAuthorize: function(data, actions) {
+      return actions.payment.execute().then(function() {
+        // Show a confirmation message to the buyer
+        window.alert('Thank you for your purchase!');
+      });
+    }
+  }, '#paypal-button');
+
+</script>
+
+<script >
+  var checkoutbtn = document.getElementById('chout')
+  var paydev = document.getElementById('paydev')
+
+  checkoutbtn.addEventListener('click',function(){
+    paydev.classList.remove('payhidden')
+  })
+
+</script>
+{% endblock script %}
+
 {% endblock %}
